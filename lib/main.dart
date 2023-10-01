@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Help App',
+      title: 'Hoot4Help',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -27,8 +27,6 @@ class RequesterPage extends StatefulWidget {
 }
 
 class _RequesterPageState extends State<RequesterPage> {
-  int buttonPressCount = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,33 +37,32 @@ class _RequesterPageState extends State<RequesterPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Button Press Count: $buttonPressCount',
-              style: TextStyle(fontSize: 20),
-            ),
             ElevatedButton(
               onPressed: () async {
-                Position position = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best,
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HelperPage(
-                      requesterLocation: position,
+                // Request location permission when "Help Me!" button is pressed
+                LocationPermission permission =
+                    await Geolocator.requestPermission();
+
+                if (permission == LocationPermission.denied) {
+                  print('Location permissions are denied');
+                } else if (permission == LocationPermission.deniedForever) {
+                  print("Location permissions are permanently denied");
+                } else {
+                  // If permission is granted, obtain the location and navigate to HelperPage
+                  Position position = await Geolocator.getCurrentPosition(
+                    desiredAccuracy: LocationAccuracy.best,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HelperPage(
+                        requesterLocation: position,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
               child: Text('Help Me!'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  buttonPressCount++; // Increment the counter
-                });
-              },
-              child: Text('Counter Button'),
             ),
           ],
         ),
