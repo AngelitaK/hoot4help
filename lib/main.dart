@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Location App',
+      title: 'Hoot4Help',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
       ),
       home: const MyHomePage(),
     );
@@ -32,8 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late StreamSubscription<Position> _positionStreamSubscription;
-  String _latitude = 'Unknown';
-  String _longitude = 'Unknown';
+  // String _latitude = 'Unknown';
+  // String _longitude = 'Unknown';
   double targetLatitude = 1.453;
   double targetLongitude = 103.83;
   String distance = 'Calculating...';
@@ -96,13 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     // Check if getting closer or further and update text color accordingly
     setState(() {
-      _latitude = currentLatitude.toStringAsFixed(6);
-      _longitude = currentLongitude.toStringAsFixed(6);
+      // _latitude = currentLatitude.toStringAsFixed(6);
+      // _longitude = currentLongitude.toStringAsFixed(6);
       distance = result.toStringAsFixed(2);
       bearing = bearingResult.toStringAsFixed(2);
 
       if (result < originalDistance) {
-        textColor = Colors.blue; // Closer, change to blue
+        textColor = Colors.green; // Closer, change to blue
       } else {
         textColor = Colors.red; // Further, change to red
       }
@@ -137,37 +137,44 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 240,203,168),
       appBar: AppBar(
-        title: const Text('Location App'),
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/icon.jpg',
+              scale: 5,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            const Text(
+              'Hoot4Help',
+              style: TextStyle(color: Color.fromARGB(255, 240,203,168)),
+            ),
+          ],
+        ),
+        backgroundColor: const Color.fromARGB(255, 110, 84, 60),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Latitude: $_latitude',
-              style: TextStyle(fontSize: 20, color: textColor),
-            ),
-            Text(
-              'Longitude: $_longitude',
-              style: TextStyle(fontSize: 20, color: textColor),
-            ),
-            Text(
-              'Distance: $distance meters',
-              style: TextStyle(fontSize: 20, color: textColor),
-            ),
-            Text(
-              'Bearing: $bearing degrees',
-              style: TextStyle(fontSize: 20, color: textColor),
+              'Distance Left: ${distance}m',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 40, color: textColor),
             ),
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(16.0),
               child: Transform.rotate(
                 angle: vector.radians(heading), // Convert degrees to radians
                 child: const Icon(
                   Icons.arrow_upward,
-                  size: 100,
-                  color: Colors.blue,
+                  size: 200,
+                  color: Color.fromARGB(255, 184, 115, 51),
                 ),
               ),
             )
