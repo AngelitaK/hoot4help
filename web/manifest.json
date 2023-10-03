@@ -1,6 +1,6 @@
 {
-    "name": "hoot4help",
-    "short_name": "hoot4help",
+    "name": "location_api",
+    "short_name": "location_api",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
